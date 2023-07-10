@@ -7,9 +7,9 @@ import pandas as pd
 
 
 class ScholarDriver(webdriver.Chrome):
-    def __init__(self):
+    def __init__(self, detach=False):
         chrome_options = Options()
-        chrome_options.add_experimental_option("detach", True)
+        chrome_options.add_experimental_option("detach", detach)
         super().__init__(options=chrome_options)
         self.get("https://scholar.google.com")
 
@@ -30,8 +30,7 @@ class ScholarDriver(webdriver.Chrome):
         # click on Profils
         items = self.find_elements(By.CSS_SELECTOR, "#gs_hdr_drw_in a span")
         for item in items:
-            print(item.text)
-            if item.text == "Profils":
+            if "Profil" in item.text:
                 item.click()
                 break
 

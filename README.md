@@ -11,6 +11,8 @@ and their details.
 pip install -r requirements.txt
 ```
 
+![Alt Text](./images/google-scholar-crawler.gif)
+
 ## Usage
 
 ```bash
