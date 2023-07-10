@@ -1,14 +1,30 @@
 from scholar import ScholarDriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+from argparse import ArgumentParser
 
 
-driver = ScholarDriver()
-driver.search_author("Hamid D. Taghirad")
-# driver.search_author("Mohammad sina Allahkaram")
-# driver.get_all_publications('https://scholar.google.com/citations?hl=fr&user=ejhATTMAAAAJ')
-driver.get_all_publications()
-print("done")
+def parse_args():
+    parser = ArgumentParser()
+    parser.add_argument("-an", "--author-name", dest="author_name", help="search for name of author")
+    parser.add_argument("-o", "--output", dest="output", help="output file name", default="output.csv")
+    parser.add_argument("-u", "--url", dest="url", help="url of author")
+    args = parser.parse_args()
+    return args
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    driver = ScholarDriver()
+    if args.author_name:
+        driver.search_author(args.author_name)
+        data = driver.get_all_publications()
+    elif args.url:
+        data = driver.get_all_publications(args.url)
+    else:
+        print("please enter a valid argument")
+
+    if args.output:
+        driver.save_data(args.output)
+
+    print("done")
 
 
