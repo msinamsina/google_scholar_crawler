@@ -3,7 +3,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-
+import pandas as pd
 
 
 class ScholarDriver(webdriver.Chrome):
@@ -59,6 +59,7 @@ class ScholarDriver(webdriver.Chrome):
 
         # get all publications
         publications = self.find_elements(By.CSS_SELECTOR, ".gsc_a_tr")
+        data = []
         for publication in publications:
             captcha_flag = False
             try:
@@ -105,14 +106,16 @@ class ScholarDriver(webdriver.Chrome):
             except Exception as e:
                 year = None
 
-            print("title")
+            data.append([title, authors, summary, year])
             print(title)
-            print("authors")
-            print(authors)
-            print("summary")
-            print(summary)
-            print(year)
             print()
             self.back()
             if captcha_flag:
                 self.back()
+        self.df = pd.DataFrame(data, columns=["title", "authors", "summary", "year"])
+        return self.df
+
+    def save_data(self, filename):
+        if not hasattr(self, "df"):
+            raise Exception("No data to save Please call get_all_publications first")
+        self.df.to_csv(filename, index=False)
