@@ -27,3 +27,4 @@ python main.py -an "John Doe" -o "output.csv"
 
 python main.py -au "https://scholar.google.com/citations?user=8Za5gQMAAAAJ&hl=en" -o "output.csv"
 ```
+(c) Mohammad Sina Allahkaram 
